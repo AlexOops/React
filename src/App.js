@@ -1,13 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 
-const messageList = [
-    {
-        author: '',
-        text: ''
-    }];
-
 function App() {
-    const [messages, setMessages] = useState(messageList);
+    const [messageList, setMessageList] = useState([]);
     const [author, setAuthor] = useState('');
     const [text, setText] = useState('');
 
@@ -15,47 +9,58 @@ function App() {
     const refText = useRef(null);
     const refButton = useRef(null);
 
-    const refAnswer = useRef();
-
-
-    function addMessage() {
-        let obj = {
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setMessageList(prevState => [...prevState, {
+            id: giveLastId(prevState),
             author: author,
             text: text
-        }
-        setMessages([...messages, obj])
+        }])
+        setAuthor("");
+        setText("");
     }
+
+    function giveLastId(array) {
+        return array.length ? array[array.length - 1].id + 1 : 0;
+    }
+
+    function botAnswer() {
+        const lastAuthor = messageList[messageList.length - 1];
+        if (lastAuthor && lastAuthor.author) {
+            setMessageList(prevState => [...prevState, {
+                id: giveLastId(prevState),
+                text: `Сообщение автора ${lastAuthor.author} отправлено!`
+            }])
+        }
+    }
+
+    useEffect(() => {
+        setTimeout(() => {
+            botAnswer();
+        }, 2000);
+    }, [messageList]);
 
     function handleClick() {
         refText.current.style.color = "green";
         refAuthor.current.style.color = "red";
         refButton.current.style.cursor = "pointer";
-        refButton.current.style.color = "blue";
     }
-
-    useEffect(() => {
-        setTimeout(() => {
-            refAnswer.current.textContent = "added message!"
-        }, 2000);
-    }, [messageList]);
 
     return (
         <div>
-            <div className="list">
-                {messages.map((item) => <p>{item.author}{item.text}</p>)}
-            </div>
-
-            <div className="messager">
+            <form onSubmit={handleSubmit}>
                 <label htmlFor="author">Автор: </label>
-                <input ref={refAuthor} type="text" value={author} onChange={(event) => setAuthor(event.target.value)}/>
+                <input ref={refAuthor} type="text" name="author" value={author}
+                       onChange={(event) => setAuthor(event.target.value)}/>
                 <label htmlFor="message">Сообщение: </label>
-                <input ref={refText} type="text" value={text} onChange={(event) => setText(event.target.value)}/>
+                <input ref={refText} type="text" name="message" value={text}
+                       onChange={(event) => setText(event.target.value)}/>
 
-                <button ref={refButton} className="button" onClick={()=> {addMessage(); handleClick()}}> Отправить </button>
-            </div>
+                <button ref={refButton} type="submit" onClick={handleClick}> Отправить</button>
+            </form>
 
-            <div className="answer">
-                <div className="title" ref={refAnswer}></div>
+            <div>
+                {messageList.map((item) => <p>{item.author}{item.text}</p>)}
             </div>
         </div>
     );
