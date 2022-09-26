@@ -1,0 +1,31 @@
+.App {
+  margin: 100px ;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .message-list {
+    margin-right: 50px;
+  }
+
+  .messages {
+    display: flex;
+    flex-direction: column;
+    margin-right: 50px;
+  }
+
+  .message-form {
+    width: 200px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 50px;
+
+    .button {
+      width: 200px;
+      height: 55px;
+    }
+  }
+}
