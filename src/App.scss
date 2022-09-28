@@ -1,11 +1,27 @@
 .App {
-  margin: 100px ;
+  margin: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
 
+  .header {
+    :nth-child(2) {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
+
   .message-list {
-    margin-right: 50px;
+    margin: 50px 0;
+
+    .chat-add {
+      margin-top: 15px;
+
+      .button {
+        width: 200px;
+        height: 55px;
+      }
+    }
   }
 
   .messages {
@@ -14,14 +30,19 @@
     margin-right: 50px;
   }
 
+  .wrapper {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
   .message-form {
+    margin: 20px 10px;
     width: 200px;
     height: 150px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-right: 50px;
 
     .button {
       width: 200px;
