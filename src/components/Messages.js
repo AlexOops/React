@@ -1,17 +1,45 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, Card, CardContent, TextField, Typography} from "@mui/material";
+import {useParams} from "react-router-dom";
 
-function Messages() {
-    const [messageList, setMessageList] = useState([]);
+const Messages = () => {
+    const [messageList, setMessageList] = useState([
+        {
+            id: 0,
+            author: "Alex",
+            text: "hello",
+            chatId: 1
+        },
+        {
+            id: 1,
+            author: "Andrey",
+            text: "hey hey",
+            chatId: 1
+        },
+        {
+            id: 2,
+            author: "Anton",
+            text: "hey",
+            chatId: 2
+        }
+    ]);
     const [author, setAuthor] = useState('');
     const [text, setText] = useState('');
 
+    const {id} = useParams();
+    let messages = messageList.filter((item) => {
+        if (!id) return true
+        return item.chatId === Number(id)
+    })
+
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(id)
         setMessageList(prevState => [...prevState, {
             id: giveLastId(prevState),
             author: author,
-            text: text
+            text: text,
+            chatId: Number(id)
         }])
         setAuthor("");
         setText("");
@@ -21,35 +49,18 @@ function Messages() {
         return array.length ? array[array.length - 1].id + 1 : 0;
     }
 
-    function botAnswer() {
-        const lastAuthor = messageList[messageList.length - 1];
-        if (lastAuthor && lastAuthor.author) {
-            setMessageList(prevState => [...prevState, {
-                id: giveLastId(prevState),
-                text: `Сообщение автора ${lastAuthor.author} отправлено!`
-            }])
-        }
-    }
-
-    useEffect(() => {
-        setTimeout(() => {
-            botAnswer();
-        }, 2000);
-    }, [messageList]);
-
-
     return (
         <div className="wrapper">
             <div className="messages">
-                {messageList.map((item) => {
-                    return (<div className="msg-text">
-                        <Card>
+                {messages.map((item) => {
+                    return (
+                        <Card className="msg-text" key={item.id}>
                             <CardContent>
                                 <Typography variant="subtitle2" color="primary">{item.author}</Typography>
-                                <Typography variant="body2" color="primary">{item.text}</Typography>
+                                <Typography variant="body" color="primary">{item.text}</Typography>
                             </CardContent>
                         </Card>
-                    </div>)
+                    )
                 })
                 }
             </div>

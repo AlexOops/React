@@ -13,7 +13,7 @@ import {
 import CommentIcon from "@mui/icons-material/Comment";
 import {Link} from "react-router-dom";
 
-function ChatsPage() {
+const ChatsPage = () => {
     const [chatList, setChatList] = useState([
         {name: "chat 1", id: 1},
         {name: "chat 2", id: 2},
@@ -40,7 +40,7 @@ function ChatsPage() {
             <Typography variant="h5" component="body2" color="primary">Chat List</Typography>
 
             {chatList.map((item) =>
-                <ListItem disablePadding>
+                <ListItem disablePadding key={item.id}>
                     <Link to={`/messages/${item.id}`} key={item.id}>
                         <ListItemButton>
                             <ListItemAvatar><Avatar><CommentIcon/></Avatar></ListItemAvatar>
@@ -63,7 +63,6 @@ function ChatsPage() {
                     variant="contained"
                     type="submit"
                     onClick={handleAdd}> Send </Button>
-
             </div>
         </div>
     );
