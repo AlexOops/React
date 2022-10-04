@@ -1,68 +1,50 @@
-import React, {useEffect, useRef, useState} from "react";
+import './App.scss';
+import React, {useState} from "react";
+import {ThemeProvider, createTheme} from "@material-ui/core/styles";
+
+import {Route, Routes} from "react-router-dom";
+import Layout from "./components/Layout";
+
+import HomePage from "./pages/HomePage";
+import ChatsPage from "./pages/ChatsPage";
+import ProfilePage from "./pages/ProfilePage";
+import NotFoundPage from "./pages/NotFoundPage";
+import Messages from "./components/Messages";
+import {ThemeContext, themes} from "./context"
+
+const themeMui = createTheme({
+    palette: {
+        type: 'light',
+        primary: {
+            main: '#3f51b5',
+        }
+    },
+});
 
 function App() {
-    const [messageList, setMessageList] = useState([]);
-    const [author, setAuthor] = useState('');
-    const [text, setText] = useState('');
 
-    const refAuthor = useRef(null);
-    const refText = useRef(null);
-    const refButton = useRef(null);
+    const [theme, setTheme] = useState(themes.light);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        setMessageList(prevState => [...prevState, {
-            id: giveLastId(prevState),
-            author: author,
-            text: text
-        }])
-        setAuthor("");
-        setText("");
-    }
-
-    function giveLastId(array) {
-        return array.length ? array[array.length - 1].id + 1 : 0;
-    }
-
-    function botAnswer() {
-        const lastAuthor = messageList[messageList.length - 1];
-        if (lastAuthor && lastAuthor.author) {
-            setMessageList(prevState => [...prevState, {
-                id: giveLastId(prevState),
-                text: `Сообщение автора ${lastAuthor.author} отправлено!`
-            }])
-        }
-    }
-
-    useEffect(() => {
-        setTimeout(() => {
-            botAnswer();
-        }, 2000);
-    }, [messageList]);
-
-    function handleClick() {
-        refText.current.style.color = "green";
-        refAuthor.current.style.color = "red";
-        refButton.current.style.cursor = "pointer";
+    const toggleTheme = () => {
+        setTheme(prevState => prevState === themes.light ? themes.dark : themes.light);
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="author">Автор: </label>
-                <input ref={refAuthor} type="text" name="author" value={author}
-                       onChange={(event) => setAuthor(event.target.value)}/>
-                <label htmlFor="message">Сообщение: </label>
-                <input ref={refText} type="text" name="message" value={text}
-                       onChange={(event) => setText(event.target.value)}/>
-
-                <button ref={refButton} type="submit" onClick={handleClick}> Отправить</button>
-            </form>
-
-            <div>
-                {messageList.map((item) => <p>{item.author}{item.text}</p>)}
-            </div>
-        </div>
+        <ThemeProvider theme={themeMui}>
+            <ThemeContext.Provider value={{themes: theme, toggleTheme: toggleTheme}}>
+                <div className="App">
+                    <Routes>
+                        <Route to path={"/"} element={<Layout/>}>
+                            <Route index element={<HomePage/>}></Route>
+                            <Route path={"/chats"} element={<ChatsPage/>}></Route>
+                            <Route path={"/profile"} element={<ProfilePage/>}></Route>
+                            <Route path={"/messages/:id"} element={<Messages/>}></Route>
+                            <Route path={"*"} element={<NotFoundPage/>}></Route>
+                        </Route>
+                    </Routes>
+                </div>
+            </ThemeContext.Provider>
+        < /ThemeProvider>
     );
 }
 
