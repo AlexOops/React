@@ -31,7 +31,7 @@ const ChatsPage = () => {
     }
 
     const handleDelete = (id) => {
-        dispatch({type: 'delete', payload: id})
+        dispatch({type: 'delete', payload: id, meta: {delayMs: 3000}})
     }
 
     return (

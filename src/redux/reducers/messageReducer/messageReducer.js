@@ -29,7 +29,6 @@ export const messageReducer = (state = initialState, action) => {
                 ...state,
                 messages: state.messages.concat(action.payload)
             }
-
         default:
             return state;
     }
