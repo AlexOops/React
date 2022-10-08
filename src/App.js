@@ -12,6 +12,8 @@ import NotFoundPage from "./pages/NotFoundPage";
 import Messages from "./components/Messages";
 import {ThemeContext, themes} from "./context"
 
+import ApiPage from "./pages/ApiPage";
+
 const themeMui = createTheme({
     palette: {
         type: 'light',
@@ -22,7 +24,6 @@ const themeMui = createTheme({
 });
 
 function App() {
-
     const [theme, setTheme] = useState(themes.light);
 
     const toggleTheme = () => {
@@ -39,6 +40,7 @@ function App() {
                             <Route path={"/chats"} element={<ChatsPage/>}></Route>
                             <Route path={"/profile"} element={<ProfilePage/>}></Route>
                             <Route path={"/messages/:id"} element={<Messages/>}></Route>
+                            <Route path={"/api"} element={<ApiPage/>}></Route>
                             <Route path={"*"} element={<NotFoundPage/>}></Route>
                         </Route>
                     </Routes>

@@ -5,7 +5,7 @@
   justify-content: center;
 
   .header {
-    :nth-child(2) {
+    :nth-child(2n+1) {
       padding-left: 10px;
       padding-right: 10px;
     }

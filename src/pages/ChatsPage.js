@@ -12,34 +12,33 @@ import {
 
 import CommentIcon from "@mui/icons-material/Comment";
 import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {chatSelector} from "../redux/reducers/chatReducer/chatSelector";
 
 const ChatsPage = () => {
-    const [chatList, setChatList] = useState([
-        {name: "chat 1", id: 1},
-        {name: "chat 2", id: 2},
-        {name: "chat 3", id: 3}
-    ]);
-
     const [newChat, setNewChat] = useState('');
+
+    const chats = useSelector(chatSelector)
+    const dispatch = useDispatch();
 
     const handleAdd = () => {
         const obj = {
             id: Date.now(),
             name: newChat,
         }
-        setChatList(prevState => [...prevState, obj]);
+        dispatch({type: 'add', payload: obj})
+        setNewChat("");
     }
 
     const handleDelete = (id) => {
-        const filtered = chatList.filter((item) => item.id !== id);
-        setChatList(filtered);
+        dispatch({type: 'delete', payload: id, meta: {delayMs: 3000}})
     }
 
     return (
         <div className="message-list">
-            <Typography variant="h5" component="body2" color="primary">Chat List</Typography>
+            <Typography variant="h5" color="primary">Chat List</Typography>
 
-            {chatList.map((item) =>
+            {chats.map((item) =>
                 <ListItem disablePadding key={item.id}>
                     <Link to={`/messages/${item.id}`} key={item.id}>
                         <ListItemButton>
@@ -55,6 +54,7 @@ const ChatsPage = () => {
                 <TextField
                     className="text"
                     placeholder="enter the name"
+                    value={newChat}
                     onChange={(e) => setNewChat(e.target.value)}
                 />
 
@@ -62,7 +62,8 @@ const ChatsPage = () => {
                     className="button"
                     variant="contained"
                     type="submit"
-                    onClick={handleAdd}> Send </Button>
+                    onClick={handleAdd}
+                > Send </Button>
             </div>
         </div>
     );

@@ -16,6 +16,7 @@ const Layout = () => {
                     <CustomLink to={"/"}>Home</CustomLink>
                     <CustomLink to={"/chats"}>Chats</CustomLink>
                     <CustomLink to={"/profile"}>Profile</CustomLink>
+                    <CustomLink to={"/api"}>API</CustomLink>
                 </header>
 
                 <main>

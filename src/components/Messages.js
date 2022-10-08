@@ -1,52 +1,33 @@
 import React, {useState} from 'react';
 import {Button, Card, CardContent, TextField, Typography} from "@mui/material";
 import {useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {messageSelector} from "../redux/reducers/messageReducer/messageSelector";
 
 const Messages = () => {
-    const [messageList, setMessageList] = useState([
-        {
-            id: 0,
-            author: "Alex",
-            text: "hello",
-            chatId: 1
-        },
-        {
-            id: 1,
-            author: "Andrey",
-            text: "hey hey",
-            chatId: 1
-        },
-        {
-            id: 2,
-            author: "Anton",
-            text: "hey",
-            chatId: 2
-        }
-    ]);
     const [author, setAuthor] = useState('');
     const [text, setText] = useState('');
 
+    const messageList = useSelector(messageSelector)
+    const dispatch = useDispatch();
+
     const {id} = useParams();
+
     let messages = messageList.filter((item) => {
         if (!id) return true
         return item.chatId === Number(id)
     })
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log(id)
-        setMessageList(prevState => [...prevState, {
-            id: giveLastId(prevState),
+    const handleAdd = () => {
+        const obj = {
+            id: Date.now(),
             author: author,
             text: text,
             chatId: Number(id)
-        }])
+        }
+        dispatch({type: 'submit', payload: obj})
         setAuthor("");
         setText("");
-    }
-
-    function giveLastId(array) {
-        return array.length ? array[array.length - 1].id + 1 : 0;
     }
 
     return (
@@ -65,7 +46,6 @@ const Messages = () => {
                 }
             </div>
             <div className="message-form">
-                <box component="span" sx={{p: 2, border: '1px dashed grey'}}>
                     <TextField
                         className="author"
                         label="Автор"
@@ -84,8 +64,7 @@ const Messages = () => {
                         className="button"
                         variant="contained"
                         type="submit"
-                        onClick={handleSubmit}> Send </Button>
-                </box>
+                        onClick={handleAdd}> Send </Button>
             </div>
         </div>
     );
