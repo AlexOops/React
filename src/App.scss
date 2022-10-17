@@ -5,7 +5,34 @@
   justify-content: center;
 
   .header {
-    :nth-child(2) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .header-auth {
+      padding-left: 30px;
+      :nth-child(2n+2) {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+    }
+
+    .header-user {
+      width: 150px;
+      padding-left: 10px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+
+      .button {
+        width: 80px;
+        height: 30px;
+      }
+    }
+  }
+
+  .navi {
+    :nth-child(2n+2) {
       padding-left: 10px;
       padding-right: 10px;
     }
@@ -35,6 +62,50 @@
     flex-direction: row-reverse;
   }
 
+  .wrp-register {
+    .sing-up {
+      text-transform: uppercase;
+    }
+
+    .reg-form {
+      margin: 20px 10px;
+      width: 300px;
+      height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+
+      .button {
+        margin-top: 10px;
+        width: 200px;
+        height: 55px;
+      }
+    }
+  }
+
+  .wrp-login {
+    .sing-in {
+      text-transform: uppercase;
+    }
+
+    .login-form {
+      margin: 20px 10px;
+      width: 300px;
+      height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .button {
+      margin-top: 10px;
+      width: 200px;
+      height: 55px;
+    }
+  }
+
   .message-form {
     margin: 20px 10px;
     width: 200px;
@@ -45,6 +116,28 @@
     align-items: center;
 
     .button {
+      width: 200px;
+      height: 55px;
+    }
+  }
+
+  .wrp-contact {
+    .contact {
+      text-transform: uppercase;
+    }
+
+    .contact-form {
+      margin: 20px 10px;
+      width: 300px;
+      height: 250px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .button {
+      margin-top: 10px;
       width: 200px;
       height: 55px;
     }

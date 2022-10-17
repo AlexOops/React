@@ -4,19 +4,9 @@ import {messageReducer} from "./reducers/messageReducer/messageReducer";
 
 import storage from "redux-persist/lib/storage"
 import {persistReducer, persistStore} from "redux-persist";
-
-const timeout = store => next => action => {
-    const delayMs = action?.meta?.delayMs
-
-    if (!delayMs) {
-        return next(action);
-    }
-
-    const result = setTimeout(() => next(action), delayMs)
-    return () => {
-        clearTimeout(result);
-    }
-}
+import thunk from "redux-thunk";
+import {apiReducer} from "./reducers/apiReducer/ApiReducer";
+import {authReducer} from "./reducers/authReducer/authReducer";
 
 const config = {
     key: 'root',
@@ -25,10 +15,12 @@ const config = {
 
 export const reducer = combineReducers({
     chats: chatReducer,
-    messages: messageReducer
+    messages: messageReducer,
+    posts: apiReducer,
+    auth: authReducer,
 })
 
 const persistedReducer = persistReducer(config, reducer);
 
-export const store = createStore(persistedReducer, applyMiddleware(timeout));
+export const store = createStore(persistedReducer, applyMiddleware(thunk));
 export const persistor = persistStore(store);

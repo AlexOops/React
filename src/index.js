@@ -19,7 +19,6 @@ root.render(
             </BrowserRouter>
         </Provider>
     </PersistGate>
-
 );
 
 reportWebVitals();

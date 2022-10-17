@@ -17,7 +17,6 @@ import {chatSelector} from "../redux/reducers/chatReducer/chatSelector";
 
 const ChatsPage = () => {
     const [newChat, setNewChat] = useState('');
-
     const chats = useSelector(chatSelector)
     const dispatch = useDispatch();
 
